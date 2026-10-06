@@ -85,3 +85,4 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:.85rem}
 .pcard p{color:var(--muted);font-size:.8rem;margin-top:4px}
 @media(min-width:700px){.pgrid{grid-template-columns:repeat(4,1fr)}}
 @media(min-width:1250px){.pgrid{grid-template-columns:repeat(8,1fr)}}
+.nav .brand img{height:50px;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #5aa8ff)}
