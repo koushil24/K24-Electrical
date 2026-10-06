@@ -64,3 +64,24 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:.85rem}
   .search input{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:8px 16px;width:220px}
   .hero2{grid-template-columns:1fr 1.4fr;align-items:center;padding:56px 20px}
 }
+/* LOGO FIX + NAV TIGHTEN */
+.nav .brand img{height:46px;background:none;padding:0;border-radius:0}
+@media(min-width:900px){
+  .nav ul a{padding:8px 9px;font-size:.85rem;white-space:nowrap}
+  .search input{width:180px}
+}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* LEARNING PATH CARDS */
+.paths{max-width:1250px}
+.section-title{display:flex;align-items:center;gap:12px;letter-spacing:.12em;font-size:.95rem;margin-bottom:16px;color:var(--text)}
+.section-title::before{content:"";width:36px;height:3px;background:var(--blue);border-radius:3px}
+.pgrid{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.pcard{position:relative;display:block;text-decoration:none;color:var(--text);background:linear-gradient(160deg,#16264a,var(--panel));border:1px solid var(--line);border-radius:14px;padding:16px 14px;min-height:150px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.pcard:hover,.pcard:active{transform:perspective(700px) rotateX(5deg) translateY(-6px);border-color:var(--blue);box-shadow:0 0 20px #2f8bff66}
+.pcard .num{color:var(--blue);font-size:1.3rem;font-weight:700}
+.pcard svg{position:absolute;top:14px;right:12px;width:44px;height:44px;fill:none;stroke:var(--cyan);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px #27d3ff99)}
+.pcard h3{margin-top:30px;font-size:1rem}
+.pcard p{color:var(--muted);font-size:.8rem;margin-top:4px}
+@media(min-width:700px){.pgrid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1250px){.pgrid{grid-template-columns:repeat(8,1fr)}}
