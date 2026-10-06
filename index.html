@@ -8,11 +8,41 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header class="hero">
-  <img src="assets/images/k24-electrical-logo.png" alt="K_24 Electrical logo">
-  <h1>K_24 Electrical</h1>
-  <p>Zero to Professional Electrical Engineering</p>
-  <a class="btn" href="#levels">Start Learning</a>
+<nav class="nav">
+  <a class="brand" href="#"><img src="assets/images/k24-electrical-logo.png" alt="K_24 Electrical"></a>
+  <button class="menu-btn" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <ul>
+    <li><a class="active" href="#">Home</a></li>
+    <li><a href="#levels">Learn</a></li>
+    <li><a href="#">Components</a></li>
+    <li><a href="#">Power Systems</a></li>
+    <li><a href="#">Protection</a></li>
+    <li><a href="#">Automation</a></li>
+    <li><a href="#">Testing</a></li>
+    <li><a href="#">Standards</a></li>
+    <li><a href="#">Tools</a></li>
+  </ul>
+  <div class="search"><input type="search" placeholder="Search topics, formulas, tools..." aria-label="Search"></div>
+</nav>
+
+<header class="hero2">
+  <div>
+    <div class="eyebrow">K_24 ELECTRICAL</div>
+    <h1>Electrical Engineering.<br>From <span>Zero to Advanced.</span></h1>
+    <p>Learn the fundamentals, understand the technology, and build real engineering knowledge.</p>
+    <div class="btns">
+      <a class="btn" href="#levels">&#9654; Start Learning</a>
+      <a class="btn ghost" href="#levels">Explore Roadmap</a>
+    </div>
+    <div class="trust">
+      <div><b>Structured Learning</b>Step by step</div>
+      <div><b>Real Industry Concepts</b>Practical approach</div>
+      <div><b>Learn at your pace</b>Free access</div>
+    </div>
+  </div>
+  <div class="hero-art">
+    <img src="assets/images/hero.jpg" alt="Substation with transformers, relay panels and current transformers">
+  </div>
 </header>
 
 <section id="levels">
@@ -52,5 +82,6 @@
 </section>
 
 <footer>K_24 Electrical &middot; Built step by step</footer>
+  <script src="js/main.js"></script>
 </body>
 </html>
