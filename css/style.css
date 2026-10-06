@@ -33,3 +33,34 @@ box-shadow:0 18px 30px #000a,0 0 18px #2f8bff55}
 border-radius:14px;padding:12px}
 .diagram svg{width:100%;height:auto}
 footer{text-align:center;color:var(--muted);padding:30px;font-size:.85rem}
+/* NAVBAR */
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:10px 16px;background:#0b1220ee;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .brand img{height:38px;width:auto;background:#fff;border-radius:8px;padding:3px;display:block}
+.nav ul{list-style:none;padding:0;display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--panel);border-bottom:1px solid var(--line)}
+.nav ul.open{display:flex}
+.nav ul a{display:block;padding:14px 20px;color:var(--text);text-decoration:none}
+.nav ul a:hover,.nav ul a.active{color:var(--cyan)}
+.menu-btn{margin-left:auto;background:none;border:1px solid var(--line);color:var(--text);font-size:1.4rem;border-radius:8px;padding:4px 12px;cursor:pointer}
+.search{display:none}
+
+/* HERO */
+.hero2{max-width:1200px;margin:0 auto;padding:32px 20px;display:grid;gap:24px}
+.eyebrow{color:var(--cyan);letter-spacing:.2em;font-size:.8rem}
+.hero2 h1{font-size:clamp(2rem,7vw,3.4rem);line-height:1.1;margin:10px 0}
+.hero2 h1 span{color:var(--blue)}
+.hero2 p{color:var(--muted)}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.btns .btn{margin-top:0}
+.btn.ghost{background:none;border:1px solid var(--blue);color:var(--text)}
+.trust{display:flex;gap:18px;flex-wrap:wrap;margin-top:24px;font-size:.85rem;color:var(--muted)}
+.trust b{display:block;color:var(--text)}
+.hero-art img{width:100%;height:auto;display:block;border-radius:16px;border:1px solid var(--line);box-shadow:0 0 40px #2f8bff55}
+
+@media(min-width:900px){
+  .menu-btn{display:none}
+  .nav ul{display:flex;flex-direction:row;position:static;background:none;border:0}
+  .nav ul a{padding:8px 12px;font-size:.9rem}
+  .search{display:block;margin-left:auto}
+  .search input{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:8px 16px;width:220px}
+  .hero2{grid-template-columns:1fr 1.4fr;align-items:center;padding:56px 20px}
+}
