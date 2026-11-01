@@ -3,7 +3,7 @@ var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools']];
 var page=location.pathname.split('/').pop()||'index.html';
 var root=document.documentElement;
 try{var t=localStorage.getItem('k24-theme');if(t)root.setAttribute('data-theme',t)}catch(e){}
-var h='<div class="wrap bar"><a href="index.html"><img src="logo.png" alt="K_24 Electrical home"></a><div class="links" id="lk">';
+var h='<div class="wrap bar"><a href="index.html"><img src="images/logo.png" alt="K_24 Electrical home"></a><div class="links" id="lk">';
 N.forEach(function(n){h+='<a href="'+n[0]+'"'+(page===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'});
 h+='</div><div class="sbox"><input id="q" type="search" placeholder="Search topics" aria-label="Search topics"><div id="res"></div></div><button class="ib" id="th" aria-label="Switch light or dark theme">&#9788;</button><button class="ib" id="mb" aria-label="Menu" aria-expanded="false">&#9776;</button></div>';
 document.getElementById('nav').innerHTML=h;
@@ -17,7 +17,7 @@ function msg(s){res.textContent='';var d=document.createElement('div');d.textCon
 q.addEventListener('input',function(){
  var s=q.value.trim().toLowerCase();
  if(s.length<2){res.style.display='none';return}
- (idx?Promise.resolve(idx):fetch('syllabus.json').then(function(r){return r.json()}).then(function(d){return idx=d}))
+ (idx?Promise.resolve(idx):fetch('data/syllabus.json').then(function(r){return r.json()}).then(function(d){return idx=d}))
  .then(function(d){
   res.textContent='';var n=0;
   d.groups.forEach(function(g){g.topics.forEach(function(tp){

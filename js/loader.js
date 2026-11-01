@@ -33,7 +33,7 @@
   d.id = 'k24-load';
   d.setAttribute('role', 'status');
   d.setAttribute('aria-label', 'Loading K_24 Electrical');
-  d.innerHTML = '<div class="k24-scene"><div class="k24-stage"><span class="k24-ring k24-r1"></span><span class="k24-ring k24-r2"></span><span class="k24-ring k24-r3"></span><img src="logo.png" alt=""></div></div><div class="k24-bar"><i></i></div><div class="k24-t">LOADING</div>';
+  d.innerHTML = '<div class="k24-scene"><div class="k24-stage"><span class="k24-ring k24-r1"></span><span class="k24-ring k24-r2"></span><span class="k24-ring k24-r3"></span><img src="images/logo.png" alt=""></div></div><div class="k24-bar"><i></i></div><div class="k24-t">LOADING</div>';
   root.appendChild(d);
 
   var t0 = Date.now(), hidden = false;

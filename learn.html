@@ -1,33 +1,26 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Learn | K_24 Electrical</title><link rel="icon" href="logo.png"><link rel="stylesheet" href="style.css"></head>
+<title>Learn | K_24 Electrical</title><link rel="icon" href="images/logo.png"><link rel="stylesheet" href="css/style.css"></head>
 <body><div id="nav"></div>
 <main class="wrap page"><h1>Learn</h1>
 <p class="m" id="stat">Loading syllabus...</p>
-<div class="chips" id="chips"></div><div id="list"></div></main>
-<script src="app.js"></script>
+<div id="list" style="margin-top:14px"></div></main>
+<script src="js/app.js"></script>
 <script>
 var done=[];try{done=JSON.parse(localStorage.getItem('k24-done')||'[]')}catch(e){}
-fetch('syllabus.json').then(function(r){return r.json()}).then(function(d){
- var f='All',L=document.getElementById('list'),C=document.getElementById('chips');
- function draw(){
-  C.textContent='';L.textContent='';
-  ['All','EEE','Motion graphics'].forEach(function(t){
-   var b=document.createElement('button');b.className='chip'+(t===f?' on':'');b.textContent=t;
-   b.onclick=function(){f=t;draw()};C.appendChild(b)});
-  d.groups.filter(function(g){return f==='All'||(f==='EEE'?g.track==='EEE':g.track==='Motion')}).forEach(function(g){
-   var s=document.createElement('section');s.className='card';s.id=g.id;
-   var h=document.createElement('h2');h.textContent=g.title+' ';
-   var tg=document.createElement('span');tg.className='tag';tg.textContent=g.level;h.appendChild(tg);
-   var u=document.createElement('ul');
-   g.topics.forEach(function(t){var li=document.createElement('li');
-    if(t.id){var a=document.createElement('a');a.href='lesson.html?id='+t.id;a.textContent=t.t+(done.indexOf(t.id)>-1?' \u2713':'');li.appendChild(a)}
-    else{li.textContent=t.t;li.className='plan';li.title='Lesson planned'}
-    u.appendChild(li)});
-   s.appendChild(h);s.appendChild(u);L.appendChild(s)});
- }
- draw();
- var all=[];d.groups.forEach(function(g){all=all.concat(g.topics)});
+fetch('data/syllabus.json').then(function(r){return r.json()}).then(function(d){
+ var L=document.getElementById('list'),all=[];
+ d.groups.forEach(function(g){
+  all=all.concat(g.topics);
+  var s=document.createElement('section');s.className='card';s.id=g.id;
+  var h=document.createElement('h2');h.textContent=g.title+' ';
+  var tg=document.createElement('span');tg.className='tag';tg.textContent=g.level;h.appendChild(tg);
+  var u=document.createElement('ul');
+  g.topics.forEach(function(t){var li=document.createElement('li');
+   if(t.id){var a=document.createElement('a');a.href='lesson.html?id='+t.id;a.textContent=t.t+(done.indexOf(t.id)>-1?' \u2713':'');li.appendChild(a)}
+   else{li.textContent=t.t;li.className='plan';li.title='Lesson planned'}
+   u.appendChild(li)});
+  s.appendChild(h);s.appendChild(u);L.appendChild(s)});
  var n=all.filter(function(t){return t.id}).length;
  document.getElementById('stat').textContent=n+' lessons available, '+(all.length-n)+' topics planned (greyed). Progress is saved only in this browser.';
  if(location.hash){var e=document.querySelector(location.hash);if(e)e.scrollIntoView()}

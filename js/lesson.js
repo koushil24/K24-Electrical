@@ -5,7 +5,7 @@ function hd(t){root.appendChild(el('h2','',t))}
 function ls(a){var u=el('ul');a.forEach(function(t){u.appendChild(el('li','',t))});root.appendChild(u)}
 function gd(){try{return JSON.parse(localStorage.getItem('k24-done')||'[]')}catch(e){return[]}}
 function sd(a){try{localStorage.setItem('k24-done',JSON.stringify(a))}catch(e){}}
-fetch('lessons.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+fetch('data/lessons.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
  var i=d.lessons.findIndex(function(l){return l.id===id});
  if(i<0){root.textContent='Lesson not found. Go back to Learn.';return}
  render(d.lessons[i],d.lessons[i-1],d.lessons[i+1]);
