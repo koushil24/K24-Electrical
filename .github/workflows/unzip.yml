@@ -16,6 +16,13 @@ jobs:
           if [ ! -f site.zip ]; then exit 0; fi
           if [ -n "$ZIP_PASSWORD" ]; then unzip -o -P "$ZIP_PASSWORD" site.zip; else unzip -o site.zip; fi
           rm site.zip
+          if [ -f _delete.txt ]; then
+            while IFS= read -r f; do
+              case "$f" in ""|*/*|.*) continue;; esac
+              rm -f -- "$f"
+            done < _delete.txt
+            rm -f _delete.txt
+          fi
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
