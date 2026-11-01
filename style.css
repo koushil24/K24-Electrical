@@ -157,3 +157,42 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;padd
 @media(min-width:1100px){.pn{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1.4fr)}}
 .pc img,.pr img{height:auto}
 #nav .wrap{max-width:1400px}
+
+/* ===== FIXES + TOOLS UPGRADE ===== */
+.hx .art::after{background:linear-gradient(0deg,var(--bg),transparent 35%),linear-gradient(180deg,var(--bg),transparent 25%)}
+@media(min-width:900px){.hx .art{left:30%}.hx .art::after{background:linear-gradient(90deg,var(--bg) 0,transparent 28%)}}
+.box2{display:flex;flex-direction:column}
+.tl{flex:1;grid-auto-rows:1fr}
+.tl a{display:flex;flex-direction:column;justify-content:center;min-height:74px}
+.jr{flex:1;align-content:space-evenly}
+.flow{grid-template-columns:repeat(2,1fr)}
+.flow div{text-shadow:0 1px 4px #000}
+@media(min-width:700px){.flow{grid-template-columns:repeat(5,1fr)}}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin:6px 0 14px}
+.tabs .chip{white-space:nowrap;flex:0 0 auto}
+.tp{display:grid;gap:14px;margin-bottom:20px}
+.tp[hidden]{display:none}
+.tl2 h2{font-size:1.3rem}
+.fx{font-family:ui-monospace,Consolas,monospace;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:10px 12px;margin:10px 0}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn.s{padding:10px 16px;font-size:.95rem}
+.res{margin-top:14px;padding:14px;border-radius:10px;background:var(--panel);border:1px solid var(--line);font-size:1.25rem;font-weight:700;color:var(--ok);min-height:56px;white-space:pre-line}
+.res.err{color:var(--bad);font-size:1rem}
+.res.idle{color:var(--muted);font-size:.95rem;font-weight:400}
+.steps{margin:10px 0 0;padding-left:22px;color:var(--muted);font-size:.92rem}
+.steps:empty{display:none}
+.vz svg{width:100%;height:auto;display:block}
+.vz .note{padding:14px 0;text-align:center}
+.vz text{fill:var(--text);font:600 13px system-ui,sans-serif}
+.vz .mu{fill:var(--muted);font-weight:400;font-size:11px}
+.vz .ln{fill:none;stroke:var(--acc);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.vz .bg{fill:var(--panel)}
+.vz .fl{fill:var(--acc)}
+.vz .fl2{fill:var(--warm)}
+.vz .tk{fill:var(--line)}
+.vz .dot{fill:var(--warm)}
+.vz .tri text{cursor:pointer;font-size:30px;fill:var(--acc)}
+.vz .tri text.on{fill:var(--warm)}
+.tp .box{margin-top:12px;font-size:.9rem}
+.tp input[type=range]{width:100%}
+@media(min-width:800px){.tp{grid-template-columns:1fr 1fr;align-items:start}}
