@@ -1,3 +1,5 @@
+window.k24Stat=function(p){var n=0,pub=0;p.modules.forEach(function(m){m.topics.forEach(function(t){n++;if(t.id)pub++})});
+ return{n:n,pub:pub,st:pub===0?'COMING SOON':pub===n?'AVAILABLE':'IN DEVELOPMENT',cl:pub===0?'soon':pub===n?'av':'dev'}};
 (function(){
 var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools']];
 var page=location.pathname.split('/').pop()||'index.html';
@@ -20,12 +22,12 @@ q.addEventListener('input',function(){
  (idx?Promise.resolve(idx):fetch('data/syllabus.json').then(function(r){return r.json()}).then(function(d){return idx=d}))
  .then(function(d){
   res.textContent='';var n=0;
-  d.groups.forEach(function(g){g.topics.forEach(function(tp){
+  d.paths.forEach(function(p){p.modules.forEach(function(g){g.topics.forEach(function(tp){
    if(n<8&&(tp.t.toLowerCase().indexOf(s)>-1||g.title.toLowerCase().indexOf(s)>-1)){
     n++;var r=document.createElement('div');
     if(tp.id){var a=document.createElement('a');a.href='lesson.html?id='+tp.id;a.textContent=tp.t;r.appendChild(a)}
     else{r.textContent=tp.t+' (planned)';r.style.color='var(--muted)'}
-    res.appendChild(r)}})});
+    res.appendChild(r)}})})});
   if(!n)msg('No matches.');else res.style.display='block'})
  .catch(function(){msg('Search could not load.')});
 });

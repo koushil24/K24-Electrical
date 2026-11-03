@@ -196,3 +196,29 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;padd
 .tp .box{margin-top:12px;font-size:.9rem}
 .tp input[type=range]{width:100%}
 @media(min-width:800px){.tp{grid-template-columns:1fr 1fr;align-items:start}}
+
+/* ===== COURSE CARDS, STATUS, LESSON EXTRAS ===== */
+.hx h1{font-size:clamp(1.8rem,5vw,2.8rem)}
+.cg{display:grid;gap:14px;grid-template-columns:1fr}
+.cc{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;color:var(--text);text-decoration:none;transition:transform .25s,border-color .25s}
+.cc:hover{transform:translateY(-3px);border-color:var(--acc)}
+.cc img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block}
+.cc .bd{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cc .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cc .row b{color:var(--acc);font-size:.8rem}
+.cc h3{font-size:1.05rem;line-height:1.25}
+.cc p,.cc li{color:var(--muted);font-size:.85rem}
+.cc ul{padding-left:18px}
+.cc .ft{margin-top:auto;padding-top:8px;font-size:.8rem}
+.st{font-size:.68rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:999px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.st.av{color:var(--ok);border-color:var(--ok)}
+.st.dev{color:var(--warm);border-color:var(--warm)}
+.st.soon{color:var(--muted);border-color:var(--muted)}
+.aud{display:flex;flex-wrap:wrap;gap:8px}
+.aud span{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;font-size:.85rem}
+.mod{font-size:.95rem;color:var(--acc);margin:14px 0 4px}
+#list .card ul{margin-top:4px}
+.lesson details{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:8px 0}
+.lesson summary{cursor:pointer;font-weight:600}
+@media(min-width:700px){.cg{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.cg{grid-template-columns:repeat(4,1fr)}}

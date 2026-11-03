@@ -8,13 +8,13 @@ function sd(a){try{localStorage.setItem('k24-done',JSON.stringify(a))}catch(e){}
 fetch('data/lessons.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
  var i=d.lessons.findIndex(function(l){return l.id===id});
  if(i<0){root.textContent='Lesson not found. Go back to Learn.';return}
- render(d.lessons[i],d.lessons[i-1],d.lessons[i+1]);
+ render(d.lessons[i],d.lessons[i-1],d.lessons[i+1],d.lessons);
 }).catch(function(){root.textContent='Could not load the lesson. Refresh and try again.'});
-function render(L,prev,next){
+function render(L,prev,next,all){
  document.title=L.title+' | K_24 Electrical';root.textContent='';
- root.appendChild(el('div','crumbs','Learn / '+L.level));
+ var cr=el('div','crumbs');var la=el('a','','Learn');la.href='learn.html';cr.appendChild(la);cr.appendChild(document.createTextNode(' / '+(L.mod||L.level)));root.appendChild(cr);
  root.appendChild(el('h1','',L.title));
- var tg=el('div','tags');[L.level].concat(L.tags).forEach(function(t){tg.appendChild(el('span','tag',t))});root.appendChild(tg);
+ var tg=el('div','tags');[L.level].concat(L.tags,L.time?['Study time: '+L.time]:[]).forEach(function(t){tg.appendChild(el('span','tag',t))});root.appendChild(tg);
  hd('Prerequisites');root.appendChild(el('p','',L.prereq));
  hd('Learning objectives');ls(L.objectives);
  hd('Plain-language explanation');L.explain.forEach(function(p){root.appendChild(el('p','',p))});
@@ -34,6 +34,9 @@ function render(L,prev,next){
     why.textContent=(k===q.answer?'Correct. ':'Not quite. ')+q.why};box.appendChild(b)});
   box.appendChild(why);root.appendChild(box)});
  hd('Revision summary');ls(L.summary);
+ if(L.practice&&L.practice.length){hd('Practice problems');L.practice.forEach(function(p){var dt=el('details');dt.appendChild(el('summary','',p.q));dt.appendChild(el('p','note','Answer: '+p.a));root.appendChild(dt)})}
+ if(L.related&&L.related.length){hd('Related lessons');var u=el('ul');L.related.forEach(function(id){var x=all.find(function(z){return z.id===id});if(!x)return;var li=el('li'),a=el('a','',x.title);a.href='lesson.html?id='+x.id;li.appendChild(a);u.appendChild(li)});root.appendChild(u)}
+ if(L.refs&&L.refs.length){hd('Authoritative references');ls(L.refs);root.appendChild(el('p','note','Confirm any limits, ratings or regulations against the current official standard or manufacturer document.'))}
  var dn=el('button','btn g');dn.type='button';
  function paint(){var on=gd().indexOf(L.id)>-1;dn.textContent=on?'\u2713 Lesson completed':'Mark lesson complete'}
  dn.onclick=function(){var d=gd();d=d.indexOf(L.id)>-1?d.filter(function(x){return x!==L.id}):d.concat(L.id);sd(d);paint()};

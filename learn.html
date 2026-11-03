@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Learn | K_24 Electrical</title><link rel="icon" href="images/logo.png"><link rel="stylesheet" href="css/style.css"></head>
+<title>Learning Paths | K_24 Electrical</title><link rel="icon" href="images/logo.png"><link rel="stylesheet" href="css/style.css"></head>
 <body><div id="nav"></div>
-<main class="wrap page"><h1>Learn</h1>
-<p class="m" id="stat">Loading syllabus...</p>
-<div id="list" style="margin-top:14px"></div></main>
+<main class="wrap page"><h1>Learning paths</h1>
+<p class="m" id="stat">Loading learning paths...</p>
+<div class="chips" id="jump"></div>
+<div id="list"></div></main>
 <script src="js/app.js"></script>
 <script>
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
 var done=[];try{done=JSON.parse(localStorage.getItem('k24-done')||'[]')}catch(e){}
 fetch('data/syllabus.json').then(function(r){return r.json()}).then(function(d){
- var L=document.getElementById('list'),all=[];
- d.groups.forEach(function(g){
-  all=all.concat(g.topics);
-  var s=document.createElement('section');s.className='card';s.id=g.id;
-  var h=document.createElement('h2');h.textContent=g.title+' ';
-  var tg=document.createElement('span');tg.className='tag';tg.textContent=g.level;h.appendChild(tg);
-  var u=document.createElement('ul');
-  g.topics.forEach(function(t){var li=document.createElement('li');
-   if(t.id){var a=document.createElement('a');a.href='lesson.html?id='+t.id;a.textContent=t.t+(done.indexOf(t.id)>-1?' \u2713':'');li.appendChild(a)}
-   else{li.textContent=t.t;li.className='plan';li.title='Lesson planned'}
-   u.appendChild(li)});
-  s.appendChild(h);s.appendChild(u);L.appendChild(s)});
- var n=all.filter(function(t){return t.id}).length;
- document.getElementById('stat').textContent=n+' lessons available, '+(all.length-n)+' topics planned (greyed). Progress is saved only in this browser.';
+ var L=document.getElementById('list'),J=document.getElementById('jump'),tp=0,tn=0;
+ d.paths.forEach(function(p){
+  var s=k24Stat(p);tp+=s.pub;tn+=s.n;
+  var j=el('a','chip','Path '+p.n);j.href='#'+p.id;J.appendChild(j);
+  var c=el('section','card');c.id=p.id;
+  var h=el('h2','','Path '+p.n+': '+p.title+' ');h.appendChild(el('span','st '+s.cl,s.st));c.appendChild(h);
+  c.appendChild(el('p','m',p.desc));
+  c.appendChild(el('p','note','Level: '+p.level+'  |  Prerequisites: '+p.prereq+'  |  Next: '+p.next));
+  var o=el('ul');p.outcomes.forEach(function(x){o.appendChild(el('li','',x))});c.appendChild(o);
+  c.appendChild(el('p','note',s.pub+' of '+s.n+' lessons published'+(s.pub?' ('+p.modules.reduce(function(a,m){return a+m.topics.filter(function(t){return t.id&&done.indexOf(t.id)>-1}).length},0)+' completed on this device)':'')));
+  p.modules.forEach(function(m,mi){
+   c.appendChild(el('h3','mod','Module '+(mi+1)+': '+m.title));
+   var u=el('ul');
+   m.topics.forEach(function(t){var li=el('li');
+    if(t.id){var a=el('a','',t.t+(done.indexOf(t.id)>-1?' \u2713':''));a.href='lesson.html?id='+t.id;li.appendChild(a)}
+    else{li.textContent=t.t;li.className='plan';li.title='Lesson planned'}
+    u.appendChild(li)});
+   c.appendChild(u)});
+  L.appendChild(c)});
+ document.getElementById('stat').textContent=tp+' of '+tn+' lessons published. Greyed topics are planned. Progress is saved only in this browser.';
  if(location.hash){var e=document.querySelector(location.hash);if(e)e.scrollIntoView()}
-}).catch(function(){document.getElementById('stat').textContent='Could not load the syllabus. Refresh and try again.'});
+}).catch(function(){document.getElementById('stat').textContent='Could not load the learning paths. Refresh and try again.'});
 </script></body></html>
