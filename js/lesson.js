@@ -5,7 +5,7 @@ function hd(t){root.appendChild(el('h2','',t))}
 function ls(a){var u=el('ul');a.forEach(function(t){u.appendChild(el('li','',t))});root.appendChild(u)}
 function gd(){try{return JSON.parse(localStorage.getItem('k24-done')||'[]')}catch(e){return[]}}
 function sd(a){try{localStorage.setItem('k24-done',JSON.stringify(a))}catch(e){}}
-fetch('data/lessons.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+Promise.all([fetch('data/lessons.json').then(function(r){if(!r.ok)throw 0;return r.json()}),fetch('data/diagrams.json').then(function(r){return r.ok?r.json():{}}).catch(function(){return{}})]).then(function(res){var d=res[0];window.DG=res[1]||{};
  var i=d.lessons.findIndex(function(l){return l.id===id});
  if(i<0){root.textContent='Lesson not found. Go back to Learn.';return}
  render(d.lessons[i],d.lessons[i-1],d.lessons[i+1],d.lessons);
@@ -18,6 +18,7 @@ function render(L,prev,next,all){
  hd('Prerequisites');root.appendChild(el('p','',L.prereq));
  hd('Learning objectives');ls(L.objectives);
  hd('Plain-language explanation');L.explain.forEach(function(p){root.appendChild(el('p','',p))});
+ if(L.diagrams&&L.diagrams.length){hd('Diagrams and symbols');L.diagrams.forEach(function(k){var g=window.DG&&window.DG[k];if(!g)return;var f=el('div','dg');f.innerHTML=g.svg;root.appendChild(f);root.appendChild(el('p','note',g.caption))})}
  hd('Technical definition');root.appendChild(el('div','box',L.definition));
  hd('Formulas');L.formulas.forEach(function(f){var b=el('div','box');b.appendChild(el('div','formula',f.f));b.appendChild(el('div','note',f.note));root.appendChild(b)});
  hd('Worked example');var ex=el('div','box');ex.appendChild(el('p','',L.example.question));

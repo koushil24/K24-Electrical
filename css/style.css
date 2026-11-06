@@ -222,3 +222,15 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;padd
 .lesson summary{cursor:pointer;font-weight:600}
 @media(min-width:700px){.cg{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1100px){.cg{grid-template-columns:repeat(4,1fr)}}
+
+/* ===== LESSON DIAGRAMS ===== */
+.dg{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;margin:10px 0 4px}
+.dg svg{width:100%;height:auto;display:block;max-height:420px}
+.dg text,.vz text{fill:var(--text);font:600 13px system-ui,sans-serif}
+.dg .mu,.vz .mu{fill:var(--muted);font-weight:400;font-size:11px}
+.dg .ln,.vz .ln{fill:none;stroke:var(--acc);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.dg .ln2,.vz .ln2{fill:none;stroke:var(--warm);stroke-width:2.5}
+.dg .ln3,.vz .ln3{fill:none;stroke:var(--ok);stroke-width:2.5}
+.dg .fl,.vz .fl{fill:var(--acc)}
+.dg .fl2,.vz .fl2{fill:var(--warm)}
+.dg .ln[style*="fill"]{fill:var(--panel)}
