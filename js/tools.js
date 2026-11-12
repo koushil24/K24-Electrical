@@ -107,11 +107,99 @@ function wave(){
   res.className='res';res.textContent='Vm = '+V+' V, f = '+f+' Hz\nVrms = Vm / √2 = '+fmt(rms)+' V\nPeriod T = 1 / f = '+fmt(1000/f)+' ms\n(dashed lines show ±Vrms)'}
  vm.oninput=draw;fq.oninput=draw;e.onclick=function(){vm.value=325;fq.value=50;draw()};
  draw();p.appendChild(L);p.appendChild(R);host.appendChild(p);return p}
+var CC=[['black','#111111',0,1,null,null],['brown','#8B4513',1,10,1,100],['red','#dd3333',2,100,2,50],['orange','#ff8800',3,1e3,null,15],['yellow','#eeee00',4,1e4,null,25],['green','#22aa22',5,1e5,0.5,null],['blue','#2266cc',6,1e6,0.25,10],['violet','#8822cc',7,1e7,0.1,5],['grey','#888888',8,1e8,0.05,null],['white','#eeeeee',9,1e9,null,null],['gold','#d4af37',null,0.1,5,null],['silver','#c0c0c0',null,0.01,10,null]];
+function cby(n){return CC.filter(function(c){return c[0]===n})[0]}
+function fmtV(v,u){var p=[[1e9,'G'],[1e6,'M'],[1e3,'k'],[1,''],[1e-3,'m'],[1e-6,'µ'],[1e-9,'n'],[1e-12,'p']];for(var i=0;i<p.length;i++){if(Math.abs(v)>=p[i][0]*0.9999999){return String(Number((v/p[i][0]).toPrecision(4)))+' '+p[i][1]+u}}return String(Number(v.toPrecision(4)))+' '+u}
+function resSvg(cols){
+ var s='<svg viewBox="0 0 300 100" role="img" aria-label="Resistor with colour bands"><line class="ln" x1="10" y1="50" x2="60" y2="50"/><line class="ln" x1="240" y1="50" x2="290" y2="50"/><rect class="ln" x="60" y="26" width="180" height="48" rx="18" style="fill:#d8c9a3;stroke:var(--acc)"/>';
+ var n=cols.length,xs=n===4?[88,112,136,196]:n===5?[84,104,124,144,200]:[80,98,116,134,152,206];
+ cols.forEach(function(c,i){s+='<rect x="'+xs[i]+'" y="26" width="12" height="48" style="fill:'+c+';stroke:#555;stroke-width:1"/>'});
+ return s+'</svg>'}
+function sel(opts,val){var s=document.createElement('select');s.style.cssText='width:100%;padding:10px;margin-top:4px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;font-size:1rem';opts.forEach(function(o){var op=document.createElement('option');op.value=o[1];op.textContent=o[0];s.appendChild(op)});if(val!==undefined)s.value=val;return s}
+function fld(label,node){var l=el('label','fld',label);l.appendChild(node);return l}
+window.k24Codes={
+ res:function(c){c=String(c).trim().toUpperCase();var m,v,st,t;
+  if((m=c.match(/^(\d{2})([ZYXSABHCDEF])$/))&&+m[1]>=1&&+m[1]<=96){var E=[100,102,105,107,110,113,115,118,121,124,127,130,133,137,140,143,147,150,154,158,162,165,169,174,178,182,187,191,196,200,205,210,215,221,226,232,237,243,249,255,261,267,274,280,287,294,301,309,316,324,332,340,348,357,365,374,383,392,402,412,422,432,442,453,464,475,487,499,511,523,536,549,562,576,590,604,619,634,649,665,681,698,715,732,750,768,787,806,825,845,866,887,909,931,953,976],M={Z:0.001,Y:0.01,X:0.1,S:0.1,A:1,B:10,H:10,C:100,D:1000,E:1e4,F:1e5};
+   v=E[+m[1]-1]*M[m[2]];return{v:v,tol:'usually ±1 %',steps:['EIA-96 code: the two digits '+m[1]+' select '+E[+m[1]-1]+' from the E96 table','The letter '+m[2]+' is the multiplier × '+M[m[2]],E[+m[1]-1]+' × '+M[m[2]]+' = '+fmtV(v,'Ω')]}}
+  if(/^\d*R\d*$/.test(c)&&c.length>1){v=parseFloat(c.replace('R','.'));if(isNaN(v))return null;return{v:v,tol:'usually ±1 % to ±5 %',steps:['R acts as the decimal point: '+c+' = '+c.replace('R','.')+' Ω']}}
+  if(/^\d{3}$/.test(c)){v=parseInt(c.slice(0,2))*Math.pow(10,+c[2]);return{v:v,tol:'usually ±5 %',steps:['First two digits '+c.slice(0,2)+', multiplier 10^'+c[2],c.slice(0,2)+' × 10^'+c[2]+' = '+fmtV(v,'Ω')]}}
+  if(/^\d{4}$/.test(c)){v=parseInt(c.slice(0,3))*Math.pow(10,+c[3]);return{v:v,tol:'usually ±1 %',steps:['First three digits '+c.slice(0,3)+', multiplier 10^'+c[3],c.slice(0,3)+' × 10^'+c[3]+' = '+fmtV(v,'Ω')]}}
+  return null},
+ cap:function(c){c=String(c).trim();var T={F:'±1 %',G:'±2 %',J:'±5 %',K:'±10 %',M:'±20 %',Z:'+80 % / −20 %'},m,pf,tol='',st;
+  if((m=c.toUpperCase().match(/^(\d{2,3})([FGJKMZ])?$/))){tol=m[2]?T[m[2]]:'';
+   if(m[1].length===2){pf=parseInt(m[1]);st=['Two digits: the value is in picofarads directly',m[1]+' pF']}
+   else{var d=m[1].slice(0,2),x=+m[1][2],mul=x===8?0.01:x===9?0.1:Math.pow(10,x);pf=parseInt(d)*mul;st=['First two digits '+d+', third digit is the multiplier ('+(x===8?'× 0.01':x===9?'× 0.1':'× 10^'+x)+')',d+' × '+mul+' pF = '+fmtV(pf*1e-12,'F')]}
+   return{v:pf*1e-12,tol:tol,steps:st}}
+  if((m=c.match(/^(\d*)([pPnNuUµ])(\d*)([FGJKMZ])?$/))&&(m[1]||m[3])){var mp={p:1e-12,n:1e-9,u:1e-6,'µ':1e-6}[m[2].toLowerCase()];var num=parseFloat((m[1]||'0')+'.'+(m[3]||'0'));return{v:num*mp,tol:m[4]?T[m[4]]:'',steps:['The letter '+m[2]+' marks the decimal point and the unit prefix',(m[1]||'0')+'.'+(m[3]||'0')+' '+m[2].toLowerCase().replace('u','µ')+'F']}}
+  return null},
+ ind:function(c){c=String(c).trim().toUpperCase();var v;
+  if(/^\d{3}$/.test(c)){v=parseInt(c.slice(0,2))*Math.pow(10,+c[2]);return{v:v*1e-6,tol:'',steps:['SMD inductor codes are in microhenries: '+c.slice(0,2)+' × 10^'+c[2]+' = '+v+' µH']}}
+  if(/^\d*R\d*$/.test(c)&&c.length>1){v=parseFloat(c.replace('R','.'));return{v:v*1e-6,tol:'',steps:['R is the decimal point, value in µH: '+v+' µH']}}
+  return null}};
+function colour(){
+ var p=el('section','tp');p.id='t-color';p.hidden=true;var Lc=el('div','tl2'),Rv=el('div','vz card');
+ Lc.appendChild(el('h2','','Resistor colour code'));Lc.appendChild(el('p','note','Pick the colours to get the value, or type a value to get the colours.'));
+ Lc.appendChild(el('div','fx','Value = (digits) × multiplier   ±tolerance'));
+ var nb=sel([['4 bands',4],['5 bands',5],['6 bands (with temperature coefficient)',6]],4),box=el('div'),res=el('div','res'),st=el('ol','steps');
+ Lc.appendChild(fld('Number of bands',nb));Lc.appendChild(box);Lc.appendChild(res);Lc.appendChild(st);
+ var dig=CC.filter(function(c){return c[2]!==null}),d1=dig.filter(function(c){return c[2]>0}),mul=CC,tl=CC.filter(function(c){return c[4]!==null}),tc=CC.filter(function(c){return c[5]!==null});
+ function opts(a){return a.map(function(c){return[c[0],c[0]]})}
+ var S=[];
+ function build(){box.textContent='';S=[];var n=+nb.value,nd=n===4?2:3;
+  for(var i=0;i<nd;i++){var s=sel(opts(i===0?d1:dig),i===0?'brown':'black');S.push(s);box.appendChild(fld('Digit '+(i+1)+' band',s))}
+  var ms=sel(opts(mul),nd===2?'red':'brown');S.push(ms);box.appendChild(fld('Multiplier band',ms));
+  var ts=sel(opts(tl),nd===2?'gold':'brown');S.push(ts);box.appendChild(fld('Tolerance band',ts));
+  if(n===6){var cs=sel(opts(tc),'brown');S.push(cs);box.appendChild(fld('Temperature coefficient band',cs))}
+  S.forEach(function(s){s.onchange=calc});calc()}
+ function calc(){var n=+nb.value,nd=n===4?2:3,v=0,i,cols=[];
+  for(i=0;i<nd;i++){var c=cby(S[i].value);v=v*10+c[2];cols.push(c[1])}
+  var m=cby(S[nd].value),t=cby(S[nd+1].value);cols.push(m[1],t[1]);var tcv=null;
+  if(n===6){var q=cby(S[nd+2].value);cols.push(q[1]);tcv=q[5]}
+  var val=v*m[3],lo=val*(1-t[4]/100),hi=val*(1+t[4]/100);
+  res.className='res';res.textContent=fmtV(val,'Ω')+'  ±'+t[4]+' %\nRange: '+fmtV(lo,'Ω')+' to '+fmtV(hi,'Ω')+(tcv?'\nTemp. coefficient: '+tcv+' ppm/K':'');
+  st.textContent='';
+  [ 'Digits: '+S.slice(0,nd).map(function(s){return s.value}).join(', ')+' = '+v,'Multiplier: '+m[0]+' = × '+m[3],'Value = '+v+' × '+m[3]+' = '+fmtV(val,'Ω'),'Tolerance: '+t[0]+' = ±'+t[4]+' %'].forEach(function(x){st.appendChild(el('li','',x))});
+  Rv.innerHTML=resSvg(cols)}
+ nb.onchange=build;build();
+ Lc.appendChild(el('h2','','Value to colours'));
+ var vin=el('input');vin.type='number';vin.step='any';vin.inputMode='decimal';var un=sel([['Ω',1],['kΩ',1e3],['MΩ',1e6]],1),tol2=sel(tl.map(function(c){return['±'+c[4]+' %',c[0]]}),'gold'),nb2=sel([['4 bands',4],['5 bands',5]],4),r2=el('div','res idle','Enter a value and tap Show bands.'),b2=el('button','btn s','Show bands');b2.type='button';
+ Lc.appendChild(fld('Resistance value',vin));Lc.appendChild(fld('Unit',un));Lc.appendChild(fld('Tolerance',tol2));Lc.appendChild(fld('Bands',nb2));Lc.appendChild(b2);Lc.appendChild(r2);
+ b2.onclick=function(){var x=Number(vin.value)*Number(un.value),n=+nb2.value,nd=n===4?2:3;
+  if(!(x>0)||!isFinite(x)){r2.className='res err';r2.textContent='Enter a value above 0.';return}
+  var e=Math.floor(Math.log10(x))-(nd-1),sig=Math.round(x/Math.pow(10,e));if(sig>=Math.pow(10,nd)){sig=Math.round(sig/10);e+=1}
+  if(Math.abs(sig*Math.pow(10,e)-x)>x*1e-9){r2.className='res err';r2.textContent='This value cannot be shown with '+n+' bands. Nearest: '+fmtV(sig*Math.pow(10,e),'Ω')+(n===4?'. Try 5 bands.':'.');return}
+  if(e<-2||e>9){r2.className='res err';r2.textContent='This value is outside the colour-band range.';return}
+  var ds=String(sig).split('').map(Number),cn=[],cols=[];
+  ds.forEach(function(d){var c=CC.filter(function(z){return z[2]===d})[0];cn.push(c[0]);cols.push(c[1])});
+  var mc=CC.filter(function(z){return z[3]===Number(Math.pow(10,e).toPrecision(12))})[0];
+  if(!mc){r2.className='res err';r2.textContent='No multiplier colour for this value.';return}
+  var tcc=cby(tol2.value);cn.push(mc[0],tcc[0]);cols.push(mc[1],tcc[1]);
+  r2.className='res';r2.textContent=fmtV(x,'Ω')+' ±'+tcc[4]+' %\nBands: '+cn.join(', ');Rv.innerHTML=resSvg(cols)};
+ p.appendChild(Lc);p.appendChild(Rv);host.appendChild(p);return p}
+function codes(){
+ var p=el('section','tp');p.id='t-smd';p.hidden=true;var Lc=el('div','tl2'),Rv=el('div','vz card');
+ Lc.appendChild(el('h2','','SMD and capacitor code decoder'));Lc.appendChild(el('p','note','Decode the marking on a surface-mount resistor, a capacitor or an SMD inductor.'));
+ var ty=sel([['SMD resistor (103, 4R7, 1002, 01C)','res'],['Capacitor (104, 22, 4n7, 475K)','cap'],['SMD inductor (100, 4R7)','ind']],'res'),inp=el('input');inp.type='text';inp.autocomplete='off';inp.placeholder='Type the marking';
+ var res=el('div','res idle','Type a marking and tap Decode.'),st=el('ol','steps'),b=el('button','btn s','Decode');b.type='button';
+ Lc.appendChild(fld('Component type',ty));Lc.appendChild(fld('Marking',inp));Lc.appendChild(b);
+ var ex=el('div','acts');[['res','103'],['res','4R7'],['res','1002'],['res','01C'],['cap','104'],['cap','4n7'],['cap','475K'],['ind','100']].forEach(function(e){var x=el('button','chip',e[1]);x.type='button';x.onclick=function(){ty.value=e[0];inp.value=e[1];run()};ex.appendChild(x)});
+ Lc.appendChild(el('p','note','Examples (tap one):'));Lc.appendChild(ex);Lc.appendChild(res);Lc.appendChild(st);
+ var mb=el('div','box warn');mb.appendChild(el('b','','Note: '));mb.appendChild(document.createTextNode('Tolerance and voltage are usually printed elsewhere or in the datasheet. SMD ceramic capacitors are often unmarked, so measure them with a capacitance meter.'));Lc.appendChild(mb);
+ function run(){var r=window.k24Codes[ty.value](inp.value);st.textContent='';
+  if(!r){res.className='res err';res.textContent='Not a recognised '+(ty.value==='res'?'resistor':ty.value==='cap'?'capacitor':'inductor')+' marking.';return}
+  var u=ty.value==='res'?'Ω':ty.value==='cap'?'F':'H';res.className='res';res.textContent=fmtV(r.v,u)+(r.tol?'  ('+r.tol+')':'');
+  r.steps.forEach(function(s){st.appendChild(el('li','',s))});
+  Rv.innerHTML='<svg viewBox="0 0 300 120" role="img" aria-label="SMD chip marking"><rect x="90" y="38" width="120" height="44" rx="4" style="fill:'+(ty.value==='cap'?'#a68b5b':'#222')+';stroke:#777"/><rect x="82" y="38" width="16" height="44" style="fill:#c0c0c0"/><rect x="202" y="38" width="16" height="44" style="fill:#c0c0c0"/>'+(ty.value==='cap'?'':'<text x="150" y="67" text-anchor="middle" style="fill:#fff;font:700 20px monospace">'+inp.value.toUpperCase().replace(/[<>&]/g,'')+'</text>')+'<text x="150" y="108" text-anchor="middle" class="mu">'+(ty.value==='cap'?'Capacitor chips are often unmarked':'Marking on the chip')+'</text></svg>'}
+ b.onclick=run;inp.onkeydown=function(e){if(e.key==='Enter')run()};
+ Rv.innerHTML='<p class="note">The chip drawing appears here after you decode.</p>';
+ p.appendChild(Lc);p.appendChild(Rv);host.appendChild(p);return p}
+
 var list=T.map(function(t){return{id:t.id,name:t.name,mk:function(){return build(t)}}});
-list.push({id:'wave',name:'Waveform explorer',mk:wave});
+list.push({id:'wave',name:'Waveform explorer',mk:wave});list.push({id:'color',name:'Resistor colour code',mk:colour});list.push({id:'smd',name:'SMD and capacitor codes',mk:codes});
 function show(id){
  list.forEach(function(t){if(!panels[t.id]&&t.id===id)panels[t.id]=t.mk();if(panels[t.id])panels[t.id].hidden=t.id!==id;btns[t.id].className='chip'+(t.id===id?' on':'');btns[t.id].setAttribute('aria-selected',t.id===id)});
  try{history.replaceState(null,'','#t-'+id)}catch(e){}}
 list.forEach(function(t){var b=el('button','chip',t.name.replace(' (single-phase)',''));b.type='button';b.setAttribute('role','tab');b.onclick=function(){show(t.id)};tabs.appendChild(b);btns[t.id]=b});
 var h=(location.hash||'').replace('#t-','');show(btns[h]?h:'ohm');
+window.addEventListener('hashchange',function(){var x=(location.hash||'').replace('#t-','');if(btns[x])show(x)});
 })();

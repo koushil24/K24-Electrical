@@ -1,7 +1,7 @@
 window.k24Stat=function(p){var n=0,pub=0;p.modules.forEach(function(m){m.topics.forEach(function(t){n++;if(t.id)pub++})});
  return{n:n,pub:pub,st:pub===0?'COMING SOON':pub===n?'AVAILABLE':'IN DEVELOPMENT',cl:pub===0?'soon':pub===n?'av':'dev'}};
 (function(){
-var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools'],['symbols.html','Symbols']];
+var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools'],['components.html','Components'],['symbols.html','Symbols']];
 var page=location.pathname.split('/').pop()||'index.html';
 var root=document.documentElement;
 try{var t=localStorage.getItem('k24-theme');if(t)root.setAttribute('data-theme',t)}catch(e){}
