@@ -256,3 +256,30 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;padd
 .pkc{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:4px;font-size:.85rem}
 .pki svg{width:100%;height:auto;display:block;max-height:110px}
 @media(min-width:800px){.cbar{grid-template-columns:2fr 1fr}.cgrid{grid-template-columns:1fr 1fr}}
+
+/* ===== INTERACTIVE SYMBOLS ===== */
+.sgrid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr);margin-bottom:8px}
+.sbtn{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 6px;cursor:pointer;font-size:.82rem;text-align:center}
+.sbtn:hover,.sbtn:focus-visible{border-color:var(--acc)}
+.sbtn svg{width:96px;height:56px}
+.sy .ln,.sbtn .ln,.shead .ln{fill:none;stroke:var(--acc);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sy .ln2,.sbtn .ln2{fill:none;stroke:var(--warm);stroke-width:2.4}
+.sy .ln3{fill:none;stroke:var(--ok);stroke-width:2.4}
+.sy .fl,.sbtn .fl,.shead .fl{fill:var(--acc)}
+.sy .fl2{fill:var(--warm)}
+.sy text,.sbtn text,.shead text{fill:var(--text);font:600 13px system-ui,sans-serif}
+.sy .mu{fill:var(--muted);font-weight:400;font-size:11px}
+.sy .t,.sbtn .t,.shead .t{fill:var(--text);font-weight:700}
+.shead{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.shead svg{width:110px;height:64px;flex:0 0 auto}
+.demo{margin-top:6px}
+.dv{width:100%;height:auto;display:block;background:var(--bg);border:1px solid var(--line);border-radius:8px;margin-bottom:8px;max-height:300px}
+#sp{margin-bottom:16px;scroll-margin-top:70px}
+@media(min-width:700px){.sgrid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1000px){.sgrid{grid-template-columns:repeat(6,1fr)}}
+
+/* ===== MOTION IN LESSON DIAGRAMS ===== */
+.dg .mv{fill:var(--warm)}
+.dg .mv3{fill:var(--warm)}
+.dg .mv4{fill:var(--ok)}
+@media(prefers-reduced-motion:reduce){.dg g.mv,.dg circle.mv,.dg circle.mv3,.dg circle.mv4{display:none}}
