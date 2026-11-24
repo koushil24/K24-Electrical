@@ -1,17 +1,16 @@
 window.k24Stat=function(p){var n=0,pub=0;p.modules.forEach(function(m){m.topics.forEach(function(t){n++;if(t.id)pub++})});
  return{n:n,pub:pub,st:pub===0?'COMING SOON':pub===n?'AVAILABLE':'IN DEVELOPMENT',cl:pub===0?'soon':pub===n?'av':'dev'}};
 (function(){
-var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools'],['components.html','Components'],['symbols.html','Symbols']];
+var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools'],['components.html','Components'],['pcb-lab.html','PCB LAB'],['symbols.html','Symbols']];
 var page=location.pathname.split('/').pop()||'index.html';
 var root=document.documentElement;
 try{var t=localStorage.getItem('k24-theme');if(t)root.setAttribute('data-theme',t)}catch(e){}
+var sy=document.createElement('style');sy.textContent='@media(min-width:800px) and (max-width:1100px){.links a{padding:8px 7px;font-size:.84rem}.sbox{max-width:150px}}';document.head.appendChild(sy);
 var h='<div class="wrap bar"><a href="index.html"><img src="images/logo.png" alt="K_24 Electrical home"></a><div class="links" id="lk">';
 N.forEach(function(n){h+='<a href="'+n[0]+'"'+(page===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'});
 h+='</div><div class="sbox"><input id="q" type="search" placeholder="Search topics" aria-label="Search topics"><div id="res"></div></div><button class="ib" id="th" aria-label="Switch light or dark theme">&#9788;</button><button class="ib" id="mb" aria-label="Menu" aria-expanded="false">&#9776;</button></div>';
 document.getElementById('nav').innerHTML=h;
-document.getElementById('th').onclick=function(){
- var n=root.getAttribute('data-theme')==='light'?'dark':'light';
- root.setAttribute('data-theme',n);try{localStorage.setItem('k24-theme',n)}catch(e){}};
+document.getElementById('th').onclick=function(){var n=root.getAttribute('data-theme')==='light'?'dark':'light';root.setAttribute('data-theme',n);try{localStorage.setItem('k24-theme',n)}catch(e){}};
 var mb=document.getElementById('mb');
 mb.onclick=function(){var o=document.getElementById('lk').classList.toggle('open');mb.setAttribute('aria-expanded',o)};
 var idx=null,q=document.getElementById('q'),res=document.getElementById('res');
@@ -20,13 +19,10 @@ q.addEventListener('input',function(){
  var s=q.value.trim().toLowerCase();
  if(s.length<2){res.style.display='none';return}
  (idx?Promise.resolve(idx):fetch('data/syllabus.json').then(function(r){return r.json()}).then(function(d){return idx=d}))
- .then(function(d){
-  res.textContent='';var n=0;
+ .then(function(d){res.textContent='';var n=0;
   d.paths.forEach(function(p){p.modules.forEach(function(g){g.topics.forEach(function(tp){
-   if(n<8&&(tp.t.toLowerCase().indexOf(s)>-1||g.title.toLowerCase().indexOf(s)>-1)){
-    n++;var r=document.createElement('div');
-    if(tp.id){var a=document.createElement('a');a.href='lesson.html?id='+tp.id;a.textContent=tp.t;r.appendChild(a)}
-    else{r.textContent=tp.t+' (planned)';r.style.color='var(--muted)'}
+   if(n<8&&(tp.t.toLowerCase().indexOf(s)>-1||g.title.toLowerCase().indexOf(s)>-1)){n++;var r=document.createElement('div');
+    if(tp.id){var a=document.createElement('a');a.href='lesson.html?id='+tp.id;a.textContent=tp.t;r.appendChild(a)}else{r.textContent=tp.t+' (planned)';r.style.color='var(--muted)'}
     res.appendChild(r)}})})});
   if(!n)msg('No matches.');else res.style.display='block'})
  .catch(function(){msg('Search could not load.')});
