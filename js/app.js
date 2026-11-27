@@ -1,8 +1,8 @@
 window.k24Stat=function(p){var n=0,pub=0;p.modules.forEach(function(m){m.topics.forEach(function(t){n++;if(t.id)pub++})});
  return{n:n,pub:pub,st:pub===0?'COMING SOON':pub===n?'AVAILABLE':'IN DEVELOPMENT',cl:pub===0?'soon':pub===n?'av':'dev'}};
 (function(){
-var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools'],['components.html','Components'],['pcb-lab.html','PCB LAB'],['symbols.html','Symbols']];
-var page=location.pathname.split('/').pop()||'index.html';
+var N=[['index.html','Home'],['learn.html','Learn'],['tools.html','Tools'],['pcb-lab.html','PCB LAB'],['symbols.html','Symbols']];
+var page=location.pathname.split('/').pop()||'index.html';if(page==='components.html'||page==='component.html')page='pcb-lab.html';
 var root=document.documentElement;
 try{var t=localStorage.getItem('k24-theme');if(t)root.setAttribute('data-theme',t)}catch(e){}
 var sy=document.createElement('style');sy.textContent='@media(min-width:800px) and (max-width:1100px){.links a{padding:8px 7px;font-size:.84rem}.sbox{max-width:150px}}';document.head.appendChild(sy);

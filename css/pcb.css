@@ -44,3 +44,14 @@ a.pl-card:hover{border-color:var(--acc)}
 @media(min-width:700px){.pl-grid{grid-template-columns:1fr 1fr}.pl-quick{grid-template-columns:repeat(4,1fr)}.pl-in{padding:44px 32px 36px}}
 @media(min-width:1000px){.pl-grid{grid-template-columns:repeat(3,1fr)}}
 @media(prefers-reduced-motion:reduce){.pl-art .dt{display:none}}
+/* ===== COMPONENTS: filters and detail page ===== */
+.cf{display:grid;gap:8px;grid-template-columns:1fr;margin-bottom:6px}
+.cf input,.cf select{width:100%;padding:10px 12px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:8px;font-size:1rem}
+.crumbs{font-size:.85rem;color:var(--muted);margin-bottom:6px}
+.lesson-tag{color:var(--ok);border-color:var(--ok)}
+.cd-sym{margin:10px 0}
+.cd-sym svg{width:150px;height:84px}
+.cd-sym .ln,.cmp .ln{fill:none;stroke:var(--acc);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.cd-sym .fl{fill:var(--acc)}.cd-sym .t{fill:var(--text);font-weight:700}
+.cd-sym text{fill:var(--text);font-family:system-ui,sans-serif}
+@media(min-width:800px){.cf{grid-template-columns:2fr 1fr 1fr 1fr}}

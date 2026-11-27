@@ -8,7 +8,7 @@ function recent(){var u=document.getElementById('rc');u.textContent='';var r=get
  if(!r.length){u.appendChild(el('li','pl-empty','Nothing explored yet. Open a card or search result and it will appear here. This list is saved only in this browser.'));return}
  r.forEach(function(x){var li=el('li'),a=el('a','',x.t);a.href=x.href;li.appendChild(a);u.appendChild(li)})}
 var D,C=[];
-Promise.all([fetch('data/pcb/topics.json').then(function(r){if(!r.ok)throw 0;return r.json()}),fetch('data/components.json').then(function(r){return r.ok?r.json():{items:[]}}).catch(function(){return{items:[]}})]).then(function(res){D=res[0];C=res[1].items||[];build()}).catch(function(){document.getElementById('pg').textContent='Could not load PCB LAB. Refresh and try again.'});
+Promise.all([fetch('data/pcb/topics.json').then(function(r){if(!r.ok)throw 0;return r.json()}),fetch('data/components.json').then(function(r){return r.ok?r.json():{items:[]}}).catch(function(){return{items:[]}}),fetch('data/pcb/components-extra.json').then(function(r){return r.ok?r.json():{items:[]}}).catch(function(){return{items:[]}})]).then(function(res){D=res[0];C=(res[1].items||[]).concat(res[2].items||[]);build()}).catch(function(){document.getElementById('pg').textContent='Could not load PCB LAB. Refresh and try again.'});
 function st(s){return el('span','pl-st '+(s==='live'?'live':'soon'),s==='live'?'AVAILABLE':'COMING SOON')}
 function build(){
  var g=document.getElementById('pg');g.textContent='';var live=0;
